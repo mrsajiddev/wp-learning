@@ -1,0 +1,326 @@
+/* =====================================================
+   SINGLE BOOK PAGE
+===================================================== */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.single-book-page {
+  background: #f5f5f5;
+  padding: 50px 0;
+}
+
+.single-book-container {
+  max-width: 100%;
+  margin: auto;
+  padding: 40px;
+}
+
+/* =====================================================
+   TOP SECTION
+===================================================== */
+
+.book-details-section {
+  display: flex;
+  justify-content: space-between;
+  gap: 40px;
+
+  background: #fff;
+  border: 1px solid #ddd;
+  padding: 30px;
+}
+
+/* =====================================================
+   BOOK IMAGE
+===================================================== */
+
+.book-image-column {
+  width: 28%;
+}
+
+.book-image-column img {
+  width: 100%;
+  display: block;
+  border: 1px solid #ddd;
+}
+
+/* =====================================================
+   BOOK INFORMATION
+===================================================== */
+
+.book-info-column {
+  width: 52%;
+}
+
+.single-book-title {
+  font-size: 34px;
+  font-weight: 700;
+  margin-bottom: 10px;
+  color: #222;
+}
+
+.book-edition {
+  color: #777;
+  font-size: 15px;
+  margin-bottom: 18px;
+}
+
+.single-book-author {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #444;
+}
+
+.stock-status {
+  display: inline-block;
+
+  background: #ff9800;
+  color: #fff;
+
+  padding: 8px 15px;
+
+  font-size: 14px;
+
+  border-radius: 3px;
+
+  margin-bottom: 25px;
+}
+
+.price-box {
+  margin: 25px 0;
+}
+
+.price-box p {
+  margin-bottom: 10px;
+  font-size: 18px;
+  color: #555;
+}
+
+.price-box del {
+  color: #888;
+}
+
+.price-box strong {
+  color: #e60000;
+  font-size: 30px;
+}
+
+/* =====================================================
+   BOOK META
+===================================================== */
+
+.book-meta {
+  margin-top: 25px;
+}
+
+.book-meta p {
+  margin-bottom: 10px;
+  color: #666;
+  font-size: 15px;
+}
+
+.book-meta strong {
+  color: #333;
+}
+
+/* =====================================================
+   BUTTONS
+===================================================== */
+
+.book-action-column {
+  width: 20%;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 15px;
+}
+
+.buy-now-btn,
+.cart-btn,
+.wishlist-btn {
+  text-decoration: none;
+  text-align: center;
+
+  padding: 15px;
+
+  border-radius: 4px;
+
+  font-size: 17px;
+
+  transition: 0.3s;
+
+  font-weight: 600;
+}
+
+.buy-now-btn {
+  background: #f7931e;
+  color: #fff;
+}
+
+.buy-now-btn:hover {
+  background: #df810d;
+}
+
+.cart-btn {
+  background: #4168b1;
+  color: #fff;
+}
+
+.cart-btn:hover {
+  background: #274d95;
+}
+
+.wishlist-btn {
+  border: 2px solid #f7931e;
+  color: #f7931e;
+}
+
+.wishlist-btn:hover {
+  background: #f7931e;
+  color: #fff;
+}
+
+/* =====================================================
+   DESCRIPTION
+===================================================== */
+
+.book-description-section {
+  margin-top: 35px;
+
+  background: #fff;
+
+  border: 1px solid #ddd;
+
+  padding: 30px;
+}
+
+.book-description-section h2 {
+  color: #f7931e;
+
+  margin-bottom: 20px;
+
+  font-size: 24px;
+}
+
+.book-description-section p {
+  line-height: 1.9;
+  color: #555;
+  margin-bottom: 18px;
+}
+
+/* =====================================================
+   AUTHOR
+===================================================== */
+
+.author-description-section {
+  margin-top: 30px;
+
+  background: #fff;
+
+  border: 1px solid #ddd;
+
+  padding: 30px;
+}
+
+.author-description-section h2 {
+  color: #f7931e;
+
+  margin-bottom: 20px;
+
+  font-size: 24px;
+}
+
+.author-description-section p {
+  line-height: 1.9;
+  color: #555;
+}
+
+/* =====================================================
+   SECTION TITLES
+===================================================== */
+
+.related-books-section,
+.bestseller-books-section {
+  margin-top: 60px;
+}
+
+.section-heading {
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  margin-bottom: 30px;
+}
+
+.section-heading h2 {
+  font-size: 30px;
+  color: #333;
+}
+
+.section-heading a {
+  text-decoration: none;
+
+  color: #f7931e;
+
+  font-weight: 600;
+}
+
+.section-heading a:hover {
+  color: #df810d;
+}
+
+/* =====================================================
+   BOOK GRID
+===================================================== */
+
+.books-grid {
+  display: grid;
+
+  grid-template-columns: repeat(4, 1fr);
+
+  gap: 30px;
+}
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media (max-width: 1024px) {
+  .book-details-section {
+    flex-wrap: wrap;
+  }
+
+  .book-image-column,
+  .book-info-column,
+  .book-action-column {
+    width: 100%;
+  }
+
+  .books-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .single-book-title {
+    font-size: 28px;
+  }
+
+  .books-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .section-heading {
+    flex-direction: column;
+
+    align-items: flex-start;
+
+    gap: 10px;
+  }
+}

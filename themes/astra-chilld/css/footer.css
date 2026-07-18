@@ -1,0 +1,186 @@
+.site-footer{
+    background:#262a31;
+    color:#fff;
+    margin-top:80px;
+}
+.bs-container{
+    width:1200px;
+    max-width:95%;
+    margin:0 auto;
+
+    display:grid;
+    grid-template-columns:1.2fr 1fr 1fr;
+    gap:80px;
+}
+.footer-main{
+    padding-top: 70px;
+}
+
+.footer-column h3{
+    color:#fff;
+    font-size:22px;
+    margin-bottom:25px;
+    font-weight:600;
+}
+
+.footer-logo{
+    margin-bottom:25px;
+}
+
+.footer-logo img{
+    max-height:70px;
+    width:auto;
+}
+
+.footer-column hr{
+    width:120px;
+    border:none;
+    border-top:2px solid #666;
+    margin:20px 0;
+}
+
+.footer-column p{
+    color:#d8d8d8;
+    line-height:1.9;
+    margin-bottom:20px;
+    font-size:15px;
+}
+
+.footer-column a{
+    color:#fff;
+    text-decoration:none;
+    transition:.3s;
+}
+
+.footer-column a:hover{
+    color:#2b5cff;
+}
+
+.footer-menu{
+    list-style:none;
+    margin:0;
+    padding:0;
+}
+
+.footer-menu li{
+    margin-bottom:14px;
+}
+
+.footer-menu a{
+    color:#d8d8d8;
+    font-size:15px;
+}
+
+.footer-menu a:hover{
+    color:#fff;
+}
+
+/* Newsletter */
+
+.newsletter-form{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
+
+.newsletter-form input{
+    width:100%;
+    height:48px;
+    border:none;
+    border-radius:5px;
+    padding:0 15px;
+    font-size:15px;
+}
+
+.newsletter-form button{
+    height:48px;
+    background:#2b5cff;
+    color:#fff;
+    border:none;
+    border-radius:5px;
+    cursor:pointer;
+    font-size:16px;
+    font-weight:600;
+    width:50%;
+}
+
+.newsletter-form button:hover{
+    background:#1845d8;
+}
+
+/* Social */
+
+.footer-social{
+    display:flex;
+    gap:15px;
+    margin-top:30px;
+}
+
+.footer-social a{
+    width:42px;
+    height:42px;
+    border-radius:50%;
+    background:#3d4148;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    color:#fff;
+    font-size:18px;
+
+    transition:.3s;
+}
+
+.footer-social a:hover{
+    background:#2b5cff;
+}
+
+/* Bottom */
+
+.footer-bottom{
+    text-align:center;
+    border-top:1px solid #3d4148;
+    color:#bdbdbd;
+    font-size:15px;
+    margin-top:30px;
+    padding: 20px;
+}
+
+/* Mobile */
+
+@media(max-width:768px){
+
+.bs-container{
+
+grid-template-columns:1fr;
+
+gap:50px;
+
+}
+
+.footer-column{
+
+text-align:center;
+
+}
+
+.footer-column hr{
+
+margin:auto;
+
+margin-top:20px;
+
+margin-bottom:20px;
+
+}
+
+.footer-social{
+
+justify-content:center;
+
+}
+.newsletter-form {
+align-items: center;
+}
+}
