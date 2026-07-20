@@ -1,5 +1,6 @@
-<?php //Template Name: Cart Template 
-get_header(); ?>
+<?php  // Template Name: Cart Template
+get_header();
+?>
 
     <div class="cart-container">
         <!-- Left Section: Shopping Cart List -->
@@ -18,9 +19,9 @@ get_header(); ?>
             </div>
 
      <?php
-// Simple product loop 
-for ($i = 0; $i < 3; $i++) { 
-?>
+// Simple product loop
+for ($i = 0; $i < 3; $i++) {
+    ?>
 
     <div class="cart-item">
         <div class="product-details">
@@ -42,8 +43,8 @@ for ($i = 0; $i < 3; $i++) {
         <div class="product-total">£88.00</div>
     </div>
 
-<?php 
-} // Loop yahan khatam hota hai
+<?php
+}  // Loop yahan khatam hota hai
 ?>
 
 

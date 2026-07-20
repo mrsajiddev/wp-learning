@@ -8,7 +8,7 @@
             <a href="<?php echo home_url(); ?>">
 
                 <?php
-                if ( has_custom_logo() ) {
+                if (has_custom_logo()) {
                     the_custom_logo();
                 } else {
                     bloginfo('name');
@@ -26,11 +26,9 @@
             <?php
 
             wp_nav_menu(array(
-
                 'theme_location' => 'primary-menu',
-                'menu_class'     => 'main-menu',
-                'container'      => false,
-
+                'menu_class' => 'main-menu',
+                'container' => false,
             ));
 
             ?>

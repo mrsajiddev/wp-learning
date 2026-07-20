@@ -1,8 +1,9 @@
 <?php
 get_header();
-if ( have_posts() ) :
-while ( have_posts() ) : the_post();
-?>
+if (have_posts()):
+    while (have_posts()):
+        the_post();
+        ?>
 
 <div class="single-book-page">
 
@@ -15,13 +16,14 @@ while ( have_posts() ) : the_post();
 
             <div class="book-image-column">
 
-<?php $image= get_field('book_image');
-                 if($image)   {
-                    ?> 
+<?php
+        $image = get_field('book_image');
+        if ($image) {
+            ?> 
                     <img src="<?php echo $image['url']; ?>" alt="<?php the_title(); ?>">
                     <?php
-                 }
-?>
+        }
+        ?>
             </div>
 
 
@@ -36,10 +38,9 @@ while ( have_posts() ) : the_post();
 
               <?php
 
-$author = get_field('select_the_author');
-if ($author) :
-
-?>
+        $author = get_field('select_the_author');
+        if ($author):
+            ?>
 
 <div class="single-book-author">
 
@@ -114,7 +115,7 @@ if ($author) :
 
             <p>
 
-    <?php the_content();?>
+    <?php the_content(); ?>
 
             </p>
 
@@ -137,27 +138,26 @@ if ($author) :
 
 <?php
 
-$args = array(
-    'post_type'      => 'book',
-    'posts_per_page' => 4,
+        $args = array(
+            'post_type' => 'book',
+            'posts_per_page' => 4,
+        );
 
-);
+        $related_books = new WP_Query($args);
 
-$related_books = new WP_Query($args);
+        if ($related_books->have_posts()):
+            while ($related_books->have_posts()):
+                $related_books->the_post();
 
-if ($related_books->have_posts()) :
-    while ($related_books->have_posts()) :
-        $related_books->the_post();
-
-        $image = get_field('book_image');
-?>                 <div class="book-card">
+                $image = get_field('book_image');
+                ?>                 <div class="book-card">
         <div class="book-image">
             <span class="badge hot">Hot</span>
             <span class="badge discount">-30%</span>
             <span class="wishlist">♡</span>
              <a href="<?php the_permalink(); ?>">
 
-            <?php if ($image) : ?>
+            <?php if ($image): ?>
                 <img src="<?php echo $image['url']; ?>" alt="<?php the_title_attribute(); ?>">
             <?php endif; ?>
 
@@ -174,10 +174,9 @@ if ($related_books->have_posts()) :
             </div>
           <?php
 
-$author = get_field('select_the_author');
-if ($author) :
-
-?>
+                $author = get_field('select_the_author');
+                if ($author):
+                    ?>
 
 <div class="author">
 
@@ -197,12 +196,12 @@ if ($author) :
     </div>
 
 <?php
-    endwhile;
-    wp_reset_postdata();
-else :
-    echo '<p>No related books found.</p>';
-endif;
-?>
+            endwhile;
+            wp_reset_postdata();
+        else:
+            echo '<p>No related books found.</p>';
+        endif;
+        ?>
 
             </div>
 
@@ -224,28 +223,27 @@ endif;
 
 <?php
 
-$args = array(
-    'post_type'      => 'book',
-    'posts_per_page' => 4,
-    'order'          => 'ASC',
+        $args = array(
+            'post_type' => 'book',
+            'posts_per_page' => 4,
+            'order' => 'ASC',
+        );
 
-);
+        $related_books = new WP_Query($args);
 
-$related_books = new WP_Query($args);
+        if ($related_books->have_posts()):
+            while ($related_books->have_posts()):
+                $related_books->the_post();
 
-if ($related_books->have_posts()) :
-    while ($related_books->have_posts()) :
-        $related_books->the_post();
-
-        $image = get_field('book_image');
-?>                 <div class="book-card">
+                $image = get_field('book_image');
+                ?>                 <div class="book-card">
         <div class="book-image">
             <span class="badge hot">Hot</span>
             <span class="badge discount">-30%</span>
             <span class="wishlist">♡</span>
              <a href="<?php the_permalink(); ?>">
 
-            <?php if ($image) : ?>
+            <?php if ($image): ?>
                 <img src="<?php echo $image['url']; ?>" alt="<?php the_title_attribute(); ?>">
             <?php endif; ?>
 
@@ -262,10 +260,9 @@ if ($related_books->have_posts()) :
             </div>
 <?php
 
-$author = get_field('select_the_author');
-if ($author) :
-
-?>
+                $author = get_field('select_the_author');
+                if ($author):
+                    ?>
 
 <div class="author">
 
@@ -284,12 +281,12 @@ if ($author) :
     </div>
 
 <?php
-    endwhile;
-    wp_reset_postdata();
-else :
-    echo '<p>No related books found.</p>';
-endif;
-?>
+            endwhile;
+            wp_reset_postdata();
+        else:
+            echo '<p>No related books found.</p>';
+        endif;
+        ?>
 
             </div>
 
@@ -300,7 +297,7 @@ endif;
 </div>
 
 <?php
-   endwhile;
+    endwhile;
 endif;
 get_footer();
 ?>

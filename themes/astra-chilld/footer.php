@@ -1,7 +1,5 @@
 <?php
-/**
- * Theme Footer
- */
+/** Theme Footer */
 ?>
 
 <footer class="site-footer">

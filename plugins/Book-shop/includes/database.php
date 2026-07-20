@@ -1,14 +1,14 @@
 <?php
 
-if ( ! defined( 'ABSPATH' ) ) {
+if (!defined('ABSPATH')) {
     exit;
 }
 
 /**
  * Create Cart Tables
  */
-function bs_create_cart_tables() {
-
+function bs_create_cart_tables()
+{
     global $wpdb;
 
     require_once ABSPATH . 'wp-admin/includes/upgrade.php';
@@ -22,8 +22,7 @@ function bs_create_cart_tables() {
     /*
      * Create Cart Table
      */
-    if ( $wpdb->get_var( "SHOW TABLES LIKE '$cart_table'" ) != $cart_table ) {
-
+    if ($wpdb->get_var("SHOW TABLES LIKE '$cart_table'") != $cart_table) {
         $sql = "CREATE TABLE $cart_table (
 
             id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -44,14 +43,13 @@ function bs_create_cart_tables() {
 
         ) $charset_collate;";
 
-        dbDelta( $sql );
+        dbDelta($sql);
     }
 
     /*
      * Create Cart Items Table
      */
-    if ( $wpdb->get_var( "SHOW TABLES LIKE '$cart_items_table'" ) != $cart_items_table ) {
-
+    if ($wpdb->get_var("SHOW TABLES LIKE '$cart_items_table'") != $cart_items_table) {
         $sql = "CREATE TABLE $cart_items_table (
 
             id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -74,7 +72,6 @@ function bs_create_cart_tables() {
 
         ) $charset_collate;";
 
-        dbDelta( $sql );
+        dbDelta($sql);
     }
-
 }

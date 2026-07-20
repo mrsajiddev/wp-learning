@@ -1,41 +1,35 @@
 <?php
+
 /*
-Template Name: Books Template
-*/
+ * Template Name: Books Template
+ */
 
 get_header();
-          
+
 $paged = get_query_var('paged') ? get_query_var('paged') : 1;
 
 $sort = isset($_GET['sort']) ? $_GET['sort'] : '';
 
-    $args = array(
-        'post_type' => 'book',
-        'posts_per_page' => 12,
-        'paged'          => $paged,
-        //
-        //
-        //
-    );
-    
-    if ($sort == 'low-high') {
-        $args['meta_key'] = 'price';
-        $args['orderby'] = 'meta_value_num';
-        $args['order'] = 'ASC';
-    }
+$args = array(
+    'post_type' => 'book',
+    'posts_per_page' => 12,
+    'paged' => $paged,
+);
 
-    elseif ($sort == 'high-low') {
-        $args['meta_key'] = 'price';
-        $args['orderby'] = 'meta_value_num';
-        $args['order'] = 'DESC';
-    }
-
-    elseif ($sort == 'popular') {
-        $args['orderby'] = 'comment_count';
-    }
+if ($sort == 'low-high') {
+    $args['meta_key'] = 'price';
+    $args['orderby'] = 'meta_value_num';
+    $args['order'] = 'ASC';
+} elseif ($sort == 'high-low') {
+    $args['meta_key'] = 'price';
+    $args['orderby'] = 'meta_value_num';
+    $args['order'] = 'DESC';
+} elseif ($sort == 'popular') {
+    $args['orderby'] = 'comment_count';
+}
 
 print_r($args);
-//die;
+// die;
 
 $books = new WP_Query($args);
 
@@ -66,9 +60,9 @@ echo "Showing {$start} – {$end} of {$total_books} results";
 <form method="GET">
 <select name="sort" onchange="this.form.submit()">
 <option value="">Sort By Latest</option>
-<option value="low-high" <?php selected($sort,'low-high'); ?>> Price Low to High</option>
-<option value="high-low"<?php selected($sort,'high-low'); ?>>Price High to Low</option>
-<option value="popular" <?php selected($sort,'popular'); ?>>Popularity</option>
+<option value="low-high" <?php selected($sort, 'low-high'); ?>> Price Low to High</option>
+<option value="high-low"<?php selected($sort, 'high-low'); ?>>Price High to Low</option>
+<option value="popular" <?php selected($sort, 'popular'); ?>>Popularity</option>
 </select>
 </form>
 </div>
@@ -79,11 +73,11 @@ echo "Showing {$start} – {$end} of {$total_books} results";
         <div class="books-grid">
 
 <?php
-          if ($books->have_posts()) :
-          while ($books->have_posts()) :
-             $books->the_post();
+if ($books->have_posts()):
+    while ($books->have_posts()):
+        $books->the_post();
 
-          ?>
+        ?>
 
                 <div class="book-card">
 
@@ -95,13 +89,14 @@ echo "Showing {$start} – {$end} of {$total_books} results";
 
                         <span class="wishlist">♡</span>
 <a href="<?php the_permalink(); ?>">
-                 <?php $image= get_field('book_image');
-                 if($image)   {
-                    ?> 
+                 <?php
+        $image = get_field('book_image');
+        if ($image) {
+            ?> 
                     <img src="<?php echo $image['url']; ?>" alt="<?php the_title(); ?>">
                     <?php
-                 }
-?></a>
+        }
+        ?></a>
                     </div>
 
                     <div class="book-info">
@@ -126,10 +121,9 @@ echo "Showing {$start} – {$end} of {$total_books} results";
           </a>
                       <?php
 
-$author = get_field('select_the_author');
-if ($author) :
-
-?>
+        $author = get_field('select_the_author');
+        if ($author):
+            ?>
 
 <div class="author">
 
@@ -148,8 +142,9 @@ if ($author) :
                 </div>
 
             <?php endwhile;
-            else: echo 'No books found';
-        endif; ?>
+else:
+    echo 'No books found';
+endif; ?>
 
         </div>
 
@@ -159,13 +154,10 @@ if ($author) :
 
 <?php
 echo paginate_links(array(
-
-    'total'     => $books->max_num_pages,
-    'current'   => $paged,
-
+    'total' => $books->max_num_pages,
+    'current' => $paged,
     'prev_text' => '←',
     'next_text' => '→',
-
 ));
 
 ?>
