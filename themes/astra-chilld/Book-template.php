@@ -28,8 +28,7 @@ if ($sort == 'low-high') {
     $args['orderby'] = 'comment_count';
 }
 
-print_r($args);
-// die;
+
 
 $books = new WP_Query($args);
 

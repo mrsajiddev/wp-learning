@@ -11,9 +11,6 @@ function child_theme_enqueue_styles()
 {
     wp_enqueue_style('parent-style', get_template_directory_uri() . '/style.css');
     wp_enqueue_style('child-style', get_stylesheet_uri(), array('parent-style'), wp_get_theme()->get('Version'));
-    wp_enqueue_style('books-style', get_stylesheet_directory_uri() . '/css/books.css', array(), wp_get_theme()->get('Version'));
-    wp_enqueue_style('single-book-style', get_stylesheet_directory_uri() . '/css/single-book.css', array('books-style'), wp_get_theme()->get('Version'));
-    wp_enqueue_style('cart-style', get_stylesheet_directory_uri() . '/css/cart.css', array(), wp_get_theme()->get('Version'));
     wp_enqueue_style('header-style', get_stylesheet_directory_uri() . '/css/header.css', array(), wp_get_theme()->get('Version'));
     wp_enqueue_style('footer-style', get_stylesheet_directory_uri() . '/css/footer.css', array(), wp_get_theme()->get('Version'));
     wp_enqueue_style('font-awesome', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css');
