@@ -4,9 +4,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-/**
- * Create Cart Tables
- */
+
 function bs_create_cart_tables()
 {
     global $wpdb;
