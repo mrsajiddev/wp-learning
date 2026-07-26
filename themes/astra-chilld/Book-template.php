@@ -28,8 +28,6 @@ if ($sort == 'low-high') {
     $args['orderby'] = 'comment_count';
 }
 
-
-
 $books = new WP_Query($args);
 
 ?>
@@ -67,7 +65,8 @@ echo "Showing {$start} – {$end} of {$total_books} results";
 </div>
 
         </div>
-
+<!-- Success Message -->
+<div id="bs-cart-message"></div>
         <!-- Books Grid -->
         <div class="books-grid">
 
@@ -131,11 +130,14 @@ if ($books->have_posts()):
     <span>
         By: <?php echo esc_html($author->display_name); ?>
     </span>
+    
 
 </div>
 
 <?php endif; ?>
-
+<a href="#" class="bs-add-to-cart" data-book-id="<?php the_ID(); ?>">
+    Add to Cart
+</a>
                     </div>
 
                 </div>

@@ -15,16 +15,11 @@
         </div>
 
         <div class="topbar-right">
-
             <a href="#">My Account</a>
-
             <a href="#">Wishlist (0)</a>
 
-            <a href="<?php
-echo home_url('/cart');  // wordpress returns http://localhost/child-theme/cart
-?>">
-                Cart (0)
-            </a>
+<a href="<?php echo home_url('/cart'); ?>">
+Cart (<span id="bs-cart-count"><?php echo bs_get_cart_count(); ?></span>)</a>
 
         </div>
 

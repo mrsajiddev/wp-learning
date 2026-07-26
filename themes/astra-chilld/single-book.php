@@ -9,7 +9,8 @@ if (have_posts()):
 
     <div class="single-book-container">
 
-
+<!-- Success Message -->
+        <div id="bs-cart-message"></div>
         <section class="book-details-section">
 
         
@@ -56,6 +57,7 @@ if (have_posts()):
 
 <?php endif; ?>
 
+
                 <span class="stock-status">
                     In stock: 
                     <?php the_field('stock'); ?>
@@ -94,9 +96,11 @@ if (have_posts()):
                     Buy Now
                 </a>
 
-                <a href="#" class="cart-btn">
-                    Add To Cart
-                </a>
+             <a href="#"
+   class="cart-btn bs-add-to-cart"
+   data-book-id="<?php the_ID(); ?>">
+    Add To Cart
+</a>
 
                 <a href="#" class="wishlist-btn">
                     Add To Wishlist
@@ -123,7 +127,7 @@ if (have_posts()):
 
         </section>
 
-
+<!-- Related Products -->
         <section class="related-books-section">
 
             <div class="section-heading">
@@ -192,7 +196,11 @@ if (have_posts()):
            <a href="<?php the_permalink(); ?>"> 
             <h3 class="book-title"><?php the_title(); ?></h3>
         </a>
+        <a href="#" class="bs-add-to-cart" data-book-id="<?php the_ID(); ?>">
+    Add to Cart
+</a>
         </div>
+        
     </div>
 
 <?php
@@ -207,7 +215,7 @@ if (have_posts()):
 
         </section>
 
-
+<!-- Best Seller -->
 
         <section class="bestseller-books-section">
 
@@ -277,6 +285,9 @@ if (have_posts()):
 <?php endif; ?>          <a href="<?php the_permalink(); ?>"> 
             <h3 class="book-title"><?php the_title(); ?></h3>
         </a>
+        <a href="#" class="bs-add-to-cart" data-book-id="<?php the_ID(); ?>">
+    Add to Cart
+</a>
         </div>
     </div>
 
