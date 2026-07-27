@@ -1,5 +1,17 @@
 <?php  // Template Name: Cart Template
 get_header();
+$cart_id = bs_get_cart_id();
+global $wpdb;
+$cart_items_table = $wpdb->prefix . 'cart_items';
+$cart_items = $wpdb->get_results(
+    $wpdb->prepare(
+        "SELECT *
+        FROM $cart_items_table
+        WHERE cart_id = %d",
+        $cart_id
+    )
+);
+
 ?>
 
     <div class="cart-container">
@@ -19,36 +31,62 @@ get_header();
             </div>
 
      <?php
-// Simple product loop
-for ($i = 0; $i < 3; $i++) {
-    ?>
 
-    <div class="cart-item">
+if (!empty($cart_items)) {
+    foreach ($cart_items as $cart_item) {
+        $book = get_post($cart_item->book_id);
+
+        if (!$book) {
+            continue;
+        }
+        $image = get_field('book_image', $book->ID);
+        $price = get_field('price', $book->ID);
+
+?>
+
+    <div class="cart-item" data-cart-item-id="<?php echo esc_attr($cart_item->id); ?>">
         <div class="product-details">
-            <img src="<?php echo get_stylesheet_directory_uri(); ?>/images/muke.jpg" alt="Fifa 19">
-            <div class="product-info">
-                <h3>Fifa 19</h3>
-                <p class="product-category">PS4</p>
+<?php if ($image): ?>
+
+    <img src="<?php echo esc_url($image['url']); ?>"
+         alt="<?php echo esc_attr($book->post_title); ?>">
+
+<?php endif; ?>            <div class="product-info">
+<h3><?php echo esc_html(get_the_title($book->ID)); ?></h3>                <?php
+        $author = get_field('select_the_author', $book->ID);
+
+        if ($author):
+?>
+
+<p class="product-category">
+    By: <?php echo esc_html($author->display_name); ?>
+</p>
+
+<?php endif; ?>
                 <button class="remove-btn">Remove</button>
             </div>
         </div>
         
         <div class="product-quantity">
-            <button class="qty-btn">-</button>
-            <input type="text" value="2" readonly>
-            <button class="qty-btn">+</button>
-        </div>
+<button class="qty-btn qty-minus">-</button><input type="text"
+       value="<?php echo esc_attr($cart_item->quantity); ?>"
+       readonly>
+<button class="qty-btn qty-plus">+</button>        </div>
         
-        <div class="product-price">£44.00</div>
-        <div class="product-total">£88.00</div>
+<div class="product-price">
+    $<?php echo number_format($price, 2); ?>
+</div>       <div class="product-total">
+    $<?php echo number_format($price * $cart_item->quantity, 2); ?>
+</div>
     </div>
 
 <?php
-}  // Loop yahan khatam hota hai
+    }
+} else {
+    echo '<p>Your cart is empty.</p>';
+}
+
 ?>
-
-
-
             <!-- Back navigation -->
             <a href="#" class="continue-shopping">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>

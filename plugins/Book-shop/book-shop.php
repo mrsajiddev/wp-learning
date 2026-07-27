@@ -16,8 +16,6 @@ require_once plugin_dir_path(__FILE__) . 'includes/admin-columns.php';
 require_once plugin_dir_path(__FILE__) . 'includes/register-taxonomy.php';
 require_once plugin_dir_path(__FILE__) . 'includes/database.php';
 require_once plugin_dir_path(__FILE__) . 'includes/cart.php';
-
-
 register_activation_hook(__FILE__, 'bs_create_cart_tables');
 
 function bs_enqueue_assets()
@@ -31,7 +29,6 @@ function bs_enqueue_assets()
             '1.0'
         );
     }
-
     // Single Book Page
     if (is_singular('book')) {
         wp_enqueue_style(
@@ -40,16 +37,13 @@ function bs_enqueue_assets()
             array(),
             '1.0'
         );
-
         wp_enqueue_style(
             'bs-single-book',
             plugin_dir_url(__FILE__) . 'assets/css/single-book.css',
             array('bs-books'),
             '1.0'
         );
-
     }
-
     // Cart Page
     if (is_page_template('cart-template.php')) {
         wp_enqueue_style(
@@ -59,25 +53,24 @@ function bs_enqueue_assets()
             '1.0'
         );
     }
-    //enqueue js in book and single page
-    if ( is_page_template( 'Book-template.php' ) || is_singular( 'book' ) ) {
-    wp_enqueue_script(
-        'bs-cart',
-        plugin_dir_url( __FILE__ ) . 'assets/js/cart.js',
-        array( 'jquery' ),
-        '1.0',
-        true
-    );
-    wp_localize_script(
-    'bs-cart',
-    'bs_cart',
-    array(
-        'ajax_url' => admin_url( 'admin-ajax.php' ),
-        'cart_url' => home_url( '/cart' ),
-    )
-);
-
-}
+    // enqueue js in book and single page
+    if (is_page_template('Book-template.php') || is_singular('book') || is_page_template('cart-template.php')) {
+        wp_enqueue_script(
+            'bs-cart',
+            plugin_dir_url(__FILE__) . 'assets/js/cart.js',
+            array('jquery'),
+            '1.0',
+            true
+        );
+        wp_localize_script(
+            'bs-cart',
+            'bs_cart',
+            array(
+                'ajax_url' => admin_url('admin-ajax.php'),
+                'cart_url' => home_url('/cart'),
+            )
+        );
+    }
 }
 
 add_action('wp_enqueue_scripts', 'bs_enqueue_assets');

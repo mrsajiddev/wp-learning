@@ -6,34 +6,39 @@ jQuery(document).ready(function ($) {
     $.ajax({
       url: bs_cart.ajax_url,
       type: "POST",
-
       data: {
         action: "bs_add_to_cart",
         book_id: book_id,
       },
-
-success: function (response) {
-
-    $('#bs-cart-message')
-        .text(response.data.message)
-        .fadeIn();
-
-    if (response.success) {
-
-        $('#bs-cart-count').text(response.data.count);
+      success: function (response) {
+        $("#bs-cart-message").text(response.data.message).fadeIn();
+        if (response.success) {
+          $("#bs-cart-count").text(response.data.count);
+          setTimeout(function () {
+            window.location.href = bs_cart.cart_url;
+          }, 1000);
+        }
         setTimeout(function () {
-        window.location.href = bs_cart.cart_url;
-    }, 1000);
+          $("#bs-cart-message").fadeOut();
+        }, 3000);
+      },
+    });
+  });
+  $(document).on("click", ".qty-plus", function () {
+    var button = $(this);
+    var cart_item_id = button.closest(".cart-item").data("cart-item-id");
 
-    }
-
-    setTimeout(function () {
-
-        $('#bs-cart-message').fadeOut();
-
-    }, 3000);
-
-}
+    $.ajax({
+      url: bs_cart.ajax_url,
+      type: "POST",
+      data: {
+        action: "bs_update_cart_quantity",
+        cart_item_id: cart_item_id,
+        operation: "increase",
+      },
+      success: function (response) {
+        console.log(response);
+      },
     });
   });
 });

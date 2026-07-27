@@ -10,7 +10,6 @@ if (!defined('ABSPATH')) {
 function bs_get_cart_id()
 {
     global $wpdb;
-
     $cart_table = $wpdb->prefix . 'cart';
     if (is_user_logged_in()) {
         $user_id = get_current_user_id();
@@ -42,7 +41,6 @@ function bs_get_cart_id()
 
         if (empty($session_id)) {
             $session_id = wp_generate_uuid4();
-
             setcookie(
                 'bs_cart_session',
                 $session_id,
@@ -84,7 +82,7 @@ function bs_get_cart_id()
  */
 function bs_add_to_cart($book_id, $quantity = 1)
 {
-    $stock = get_field( 'stock', $book_id );
+    $stock = get_field('stock', $book_id);
     $cart_id = bs_get_cart_id();
     global $wpdb;
     $cart_items_table = $wpdb->prefix . 'cart_items';
@@ -99,17 +97,15 @@ function bs_add_to_cart($book_id, $quantity = 1)
             $book_id
         )
     );
-    if ( $cart_item ) {
-    $current_quantity = $cart_item->quantity;
-    if ( ( $current_quantity + $quantity ) > $stock ) {
-
-    return new WP_Error(
-        'out_of_stock',
-        'Sorry, only ' . $stock . ' books are available.'
-    );
-
-}
-}
+    if ($cart_item) {
+        $current_quantity = $cart_item->quantity;
+        if (($current_quantity + $quantity) > $stock) {
+            return new WP_Error(
+                'out_of_stock',
+                'Sorry, only ' . $stock . ' books are available.'
+            );
+        }
+    }
     if ($cart_item) {
         $wpdb->update($cart_items_table, array(
             'quantity' => $cart_item->quantity + $quantity,
@@ -136,9 +132,7 @@ function bs_add_to_cart($book_id, $quantity = 1)
 function bs_get_cart_count()
 {
     $cart_id = bs_get_cart_id();
-
     global $wpdb;
-
     $cart_items_table = $wpdb->prefix . 'cart_items';
 
     $count = $wpdb->get_var(
@@ -164,32 +158,75 @@ function bs_ajax_add_to_cart()
 
     if (!$book_id) {
         echo 'Invalid Book';
-
         wp_die();
     }
 
-$result = bs_add_to_cart( $book_id );
+    $result = bs_add_to_cart($book_id);
 
-if ( is_wp_error( $result ) ) {
+    if (is_wp_error($result)) {
+        wp_send_json_error(
+            array(
+                'message' => $result->get_error_message(),
+            )
+        );
+    }
 
-    wp_send_json_error(
+    wp_send_json_success(
         array(
-            'message' => $result->get_error_message(),
+            'message' => 'Book added successfully',
+            'count' => bs_get_cart_count(),
         )
     );
-
 }
 
-wp_send_json_success(
-    array(
-        'message' => 'Book added successfully',
-        'count'   => bs_get_cart_count(),
-    )
-);
+/**
+ * AJAX Update Cart Quantity
+ */
+function bs_update_cart_quantity()
+{
+    $cart_item_id = isset($_POST['cart_item_id'])
+        ? absint($_POST['cart_item_id'])
+        : 0;
+    $operation = isset($_POST['operation'])
+        ? sanitize_text_field($_POST['operation'])
+        : '';
+    global $wpdb;
+
+    $cart_items_table = $wpdb->prefix . 'cart_items';
+    $cart_item = $wpdb->get_row(
+        $wpdb->prepare(
+            "SELECT * FROM $cart_items_table WHERE id = %d",
+            $cart_item_id
+        )
+    );
+    if (!$cart_item) {
+        echo 'Cart item not found';
+
+        wp_die();
+    }
+    if ($operation === 'increase') {
+        $new_quantity = $cart_item->quantity + 1;
+        $wpdb->update(
+            $cart_items_table,
+            array(
+                'quantity' => $new_quantity,
+                'updated_at' => current_time('mysql'),
+            ),
+            array(
+                'id' => $cart_item_id,
+            )
+        );
+    }
+
+    echo 'New Quantity: ' . $new_quantity;
+
+    wp_die();
 }
 
 add_action('wp_ajax_bs_add_to_cart', 'bs_ajax_add_to_cart');
 add_action('wp_ajax_nopriv_bs_add_to_cart', 'bs_ajax_add_to_cart');
+add_action('wp_ajax_bs_update_cart_quantity', 'bs_update_cart_quantity');
+add_action('wp_ajax_nopriv_bs_update_cart_quantity', 'bs_update_cart_quantity');
 
 /**
  * AJAX Add To Cart
