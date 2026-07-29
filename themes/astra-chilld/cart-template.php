@@ -11,17 +11,36 @@ $cart_items = $wpdb->get_results(
         $cart_id
     )
 );
+$total_items = 0;
+$subtotal = 0;
+$shipping = 5;
+foreach ($cart_items as $cart_item) {
+
+    $book = get_post($cart_item->book_id);
+
+    if (!$book) {
+        continue;
+    }
+
+    $price = get_field('price', $book->ID);
+
+    $total_items += $cart_item->quantity;
+    $subtotal += $price * $cart_item->quantity;
+}
+
+$grand_total = $subtotal + $shipping;
 
 ?>
 
     <div class="cart-container">
         <!-- Left Section: Shopping Cart List -->
         <main class="cart-main">
-            <div class="cart-header">
-                <h1>Shopping Cart</h1>
-                <span class="item-count">3 Items</span>
-            </div>
-
+<div class="cart-header">
+    <h1>Shopping Cart</h1>
+<span class="item-count">
+    <span class="cart-header-count"><?php echo esc_html($total_items); ?></span> Items
+</span>
+</div>
             <!-- Table Headers -->
             <div class="cart-labels">
                 <span class="label-product">Product Details</span>
@@ -41,7 +60,7 @@ if (!empty($cart_items)) {
         }
         $image = get_field('book_image', $book->ID);
         $price = get_field('price', $book->ID);
-
+     
 ?>
 
     <div class="cart-item" data-cart-item-id="<?php echo esc_attr($cart_item->id); ?>">
@@ -87,7 +106,6 @@ if (!empty($cart_items)) {
 } else {
     echo '<p>Your cart is empty.</p>';
 }
-
 ?>
             <!-- Back navigation -->
             <a href="#" class="continue-shopping">
@@ -100,12 +118,14 @@ if (!empty($cart_items)) {
         <aside class="cart-summary">
             <h2>Order Summary</h2>
             
-            <div class="summary-row summary-subtotal">
-                <span>ITEMS 3</span>
-                <span>£457.98</span>
-            </div>
-
-            <div class="summary-field">
+         <div class="summary-row summary-subtotal">
+<span>
+    ITEMS <span class="cart-total-items"><?php echo esc_html($total_items); ?></span>
+<span>
+    $<span class="cart-subtotal"><?php echo number_format($subtotal, 2); ?></span>
+</span>
+</div>
+            <!-- <div class="summary-field">
                 <label for="shipping">SHIPPING</label>
                 <div class="select-wrapper">
                     <select id="shipping">
@@ -113,7 +133,7 @@ if (!empty($cart_items)) {
                         <option>Express Delivery - £10.00</option>
                     </select>
                 </div>
-            </div>
+            </div> -->
 
             <div class="summary-field">
                 <label for="promo">PROMO CODE</label>
@@ -121,11 +141,12 @@ if (!empty($cart_items)) {
                 <button class="apply-btn">APPLY</button>
             </div>
 
-            <div class="summary-total-row">
-                <span>TOTAL COST</span>
-                <span>£462.98</span>
-            </div>
-
+      <div class="summary-total-row">
+    <span>TOTAL COST</span>
+<span>
+    $<span class="cart-grand-total"><?php echo number_format($grand_total, 2); ?></span>
+</span>
+</div>
             <button class="checkout-btn">CHECKOUT</button>
         </aside>
     </div>

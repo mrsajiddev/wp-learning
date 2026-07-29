@@ -218,11 +218,8 @@ function bs_update_cart_quantity()
         );
     }
 elseif ($operation === 'decrease') {
-
     if ($cart_item->quantity > 1) {
-
         $new_quantity = $cart_item->quantity - 1;
-
         $wpdb->update(
             $cart_items_table,
             array(
@@ -255,10 +252,86 @@ elseif ($operation === 'decrease') {
 
 $price = get_field( 'price', $cart_item->book_id );
 $row_total = $price * $new_quantity;
+$cart_id = bs_get_cart_id();
+$cart_items = $wpdb->get_results(
+    $wpdb->prepare(
+        "SELECT *
+         FROM $cart_items_table
+         WHERE cart_id = %d",
+        $cart_id
+    )
+);
+$total_items = 0;
+$subtotal = 0;
+$shipping = 5;
+foreach ($cart_items as $item) {
+    $price = get_field('price', $item->book_id);
+    $total_items += $item->quantity;
+    $subtotal += $price * $item->quantity;
+}
+
+$grand_total = $subtotal + $shipping;
 wp_send_json_success(
     array(
-        'quantity'  => $new_quantity,
-        'row_total' => number_format( $row_total, 2 ),
+        'quantity'     => $new_quantity,
+        'row_total'    => number_format($row_total, 2),
+        'total_items'  => $total_items,
+        'subtotal'     => number_format($subtotal, 2),
+        'grand_total'  => number_format($grand_total, 2),
+    )
+);
+}
+function bs_remove_cart_item()
+{
+    $cart_item_id = isset($_POST['cart_item_id'])
+        ? absint($_POST['cart_item_id'])
+        : 0;
+        global $wpdb;
+       $cart_items_table = $wpdb->prefix . 'cart_items';
+       $cart_item = $wpdb->get_row(
+    $wpdb->prepare(
+        "SELECT *
+         FROM $cart_items_table
+         WHERE id = %d",
+        $cart_item_id
+    )
+);
+     if (!$cart_item) {
+         wp_send_json_error(
+        array(
+            'message' => 'Cart item not found.'
+        )
+    );
+}
+$wpdb->delete(
+    $cart_items_table,
+    array(
+        'id' => $cart_item_id,
+    )
+);
+$cart_id = bs_get_cart_id();
+$cart_items = $wpdb->get_results(
+    $wpdb->prepare(
+        "SELECT *
+         FROM $cart_items_table
+         WHERE cart_id = %d",
+        $cart_id
+    )
+);
+$total_items = 0;
+$subtotal = 0;
+$shipping = 5;
+foreach ($cart_items as $item) {
+    $price = get_field('price', $item->book_id);
+    $total_items += $item->quantity;
+    $subtotal += $price * $item->quantity;
+}
+$grand_total = $subtotal + $shipping;
+wp_send_json_success(
+    array(
+        'total_items' => $total_items,
+        'subtotal'    => number_format($subtotal, 2),
+        'grand_total' => number_format($grand_total, 2),
     )
 );
 }
@@ -266,4 +339,6 @@ add_action('wp_ajax_bs_add_to_cart', 'bs_ajax_add_to_cart');
 add_action('wp_ajax_nopriv_bs_add_to_cart', 'bs_ajax_add_to_cart');
 add_action('wp_ajax_bs_update_cart_quantity', 'bs_update_cart_quantity');
 add_action('wp_ajax_nopriv_bs_update_cart_quantity', 'bs_update_cart_quantity');
+add_action('wp_ajax_bs_remove_cart_item', 'bs_remove_cart_item');
+add_action('wp_ajax_nopriv_bs_remove_cart_item', 'bs_remove_cart_item');
 

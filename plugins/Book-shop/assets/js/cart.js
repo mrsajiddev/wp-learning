@@ -37,7 +37,6 @@ jQuery(document).ready(function ($) {
         operation: "increase",
       },
   success: function (response) {
-
     if (response.success) {
 
         // Update quantity input
@@ -50,6 +49,16 @@ jQuery(document).ready(function ($) {
             .closest('.cart-item')
             .find('.cart-item-total')
             .text(response.data.row_total);
+            // Update header item count
+            $('.cart-header-count').text(response.data.total_items);
+            // Update order summary item count
+            $('.cart-total-items').text(response.data.total_items);
+            // Update subtotal
+            $('.cart-subtotal').text(response.data.subtotal);                
+            // Update grand total
+            $('.cart-grand-total').text(response.data.grand_total);
+             // Update tobar
+            $('#bs-cart-count').text(response.data.total_items);
 
     }
 
@@ -71,19 +80,16 @@ $(document).on('click', '.qty-minus', function () {
             operation: 'decrease'
         },
 success: function (response) {
-
     if (response.success) {
-
         if (response.data.removed) {
-
-            button
-                .closest('.cart-item')
-                .remove();
-
-            return;
-
-        }
-
+           button.closest('.cart-item').remove();
+           $('.cart-header-count').text(response.data.total_items);
+           $('.cart-total-items').text(response.data.total_items);
+           $('.cart-subtotal').text(response.data.subtotal);
+           $('.cart-grand-total').text(response.data.grand_total);
+           $('#bs-cart-count').text(response.data.total_items);          
+           return;
+}
         button
             .siblings('input')
             .val(response.data.quantity);
@@ -92,7 +98,11 @@ success: function (response) {
             .closest('.cart-item')
             .find('.cart-item-total')
             .text(response.data.row_total);
-
+            $('.cart-header-count').text(response.data.total_items);
+            $('.cart-total-items').text(response.data.total_items);
+            $('.cart-subtotal').text(response.data.subtotal);
+            $('.cart-grand-total').text(response.data.grand_total);
+            $('#bs-cart-count').text(response.data.total_items);           
     }
 
 },
@@ -103,6 +113,38 @@ error: function (xhr) {
 
 }
 
+    });
+});
+// Remove Cart Item
+$(document).on('click', '.remove-btn', function () {
+    var button = $(this);
+    var cart_item_id = button
+        .closest('.cart-item')
+        .data('cart-item-id');
+    $.ajax({
+        url: bs_cart.ajax_url,
+        type: 'POST',
+        data: {
+            action: 'bs_remove_cart_item',
+            cart_item_id: cart_item_id
+        },
+      success: function (response) {
+         if (response.success) {
+           // Remove the cart row
+           button.closest('.cart-item').remove();
+           // Update header item count
+           $('.cart-header-count').text(response.data.total_items);
+           // Update order summary item count
+           $('.cart-total-items').text(response.data.total_items);
+           // Update subtotal
+           $('.cart-subtotal').text(response.data.subtotal);
+           // Update grand total
+           $('.cart-grand-total').text(response.data.grand_total);
+            // Update topbar cart
+           $('#bs-cart-count').text(response.data.total_items);
+    }
+
+}
     });
 });
 });
