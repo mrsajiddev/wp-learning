@@ -76,7 +76,9 @@ if (!empty($cart_items)) {
 <div class="product-price">
     $<?php echo number_format($price, 2); ?>
 </div>       <div class="product-total">
-    $<?php echo number_format($price * $cart_item->quantity, 2); ?>
+    $<span class="cart-item-total">
+        <?php echo number_format($price * $cart_item->quantity, 2); ?>
+    </span>
 </div>
     </div>
 

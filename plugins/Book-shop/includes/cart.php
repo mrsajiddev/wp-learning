@@ -217,17 +217,53 @@ function bs_update_cart_quantity()
             )
         );
     }
+elseif ($operation === 'decrease') {
 
-    echo 'New Quantity: ' . $new_quantity;
+    if ($cart_item->quantity > 1) {
 
-    wp_die();
+        $new_quantity = $cart_item->quantity - 1;
+
+        $wpdb->update(
+            $cart_items_table,
+            array(
+                'quantity'   => $new_quantity,
+                'updated_at' => current_time('mysql'),
+            ),
+            array(
+                'id' => $cart_item_id,
+            )
+        );
+
+    } else {
+
+        $wpdb->delete(
+            $cart_items_table,
+            array(
+                'id' => $cart_item_id,
+            )
+        );
+
+        wp_send_json_success(
+            array(
+                'removed' => true,
+            )
+        );
+
+    }
+
 }
 
+$price = get_field( 'price', $cart_item->book_id );
+$row_total = $price * $new_quantity;
+wp_send_json_success(
+    array(
+        'quantity'  => $new_quantity,
+        'row_total' => number_format( $row_total, 2 ),
+    )
+);
+}
 add_action('wp_ajax_bs_add_to_cart', 'bs_ajax_add_to_cart');
 add_action('wp_ajax_nopriv_bs_add_to_cart', 'bs_ajax_add_to_cart');
 add_action('wp_ajax_bs_update_cart_quantity', 'bs_update_cart_quantity');
 add_action('wp_ajax_nopriv_bs_update_cart_quantity', 'bs_update_cart_quantity');
 
-/**
- * AJAX Add To Cart
- */

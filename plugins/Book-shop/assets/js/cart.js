@@ -24,10 +24,10 @@ jQuery(document).ready(function ($) {
       },
     });
   });
+     // Quantity Increase (+)
   $(document).on("click", ".qty-plus", function () {
     var button = $(this);
     var cart_item_id = button.closest(".cart-item").data("cart-item-id");
-
     $.ajax({
       url: bs_cart.ajax_url,
       type: "POST",
@@ -36,9 +36,73 @@ jQuery(document).ready(function ($) {
         cart_item_id: cart_item_id,
         operation: "increase",
       },
-      success: function (response) {
-        console.log(response);
-      },
+  success: function (response) {
+
+    if (response.success) {
+
+        // Update quantity input
+        button
+            .siblings('input')
+            .val(response.data.quantity);
+
+        // Update row total
+        button
+            .closest('.cart-item')
+            .find('.cart-item-total')
+            .text(response.data.row_total);
+
+    }
+
+}
     });
   });
+      // Quantity Decrease (-)
+$(document).on('click', '.qty-minus', function () {
+    var button = $(this);
+    var cart_item_id = button
+        .closest('.cart-item')
+        .data('cart-item-id');
+    $.ajax({
+        url: bs_cart.ajax_url,
+        type: 'POST',
+        data: {
+            action: 'bs_update_cart_quantity',
+            cart_item_id: cart_item_id,
+            operation: 'decrease'
+        },
+success: function (response) {
+
+    if (response.success) {
+
+        if (response.data.removed) {
+
+            button
+                .closest('.cart-item')
+                .remove();
+
+            return;
+
+        }
+
+        button
+            .siblings('input')
+            .val(response.data.quantity);
+
+        button
+            .closest('.cart-item')
+            .find('.cart-item-total')
+            .text(response.data.row_total);
+
+    }
+
+},
+
+error: function (xhr) {
+
+    console.log('ERROR:', xhr.responseText);
+
+}
+
+    });
+});
 });
